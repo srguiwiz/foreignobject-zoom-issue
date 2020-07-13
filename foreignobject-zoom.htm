@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8"/>
+  </head>
+  <body style="font-size:12px;">
+    <div style="width:200px;height:30px;background-color:lightgreen;">
+      div directly in body
+    </div>
+    <svg width="500" height="300">
+      <foreignObject width="500" height="300">
+        <div style="width:200px;height:30px;background-color:lightcoral;">
+          div in foreignObject in svg in body
+        </div>
+        <iframe width="500" height="400">
+        </iframe>
+      </foreignObject>
+    </svg>
+    <script>
+      <!-- this script and file is made so this same file can be used as src in the iframe -->
+      var body = document.querySelector("body");
+      var iframe = document.querySelector("iframe");
+      if (!document.location.hash) {
+        iframe.src = document.location.href + "#2nd";
+        body.insertAdjacentHTML("afterbegin",`
+<p>this whole page should zoom all the same, e.g. try it out with Ctrl +/-,</p>
+<p>the colorful rectangles should be the same size respectively,</p>
+<p>but it zooms wrongly in many Chrome versions, e.g. 84.0.4147.68</p>
+<p>where incorrectly the iframe zooms twice, squaring the scale e.g. 1.5 * 1.5 = 2.25,</p>
+<p>and similarly high DPI screens behave like scale 2 with 2 * 2 = 4,</p>
+<p>meanwhile it works fine in Firefox</p>`);
+      } else {
+        body.insertAdjacentHTML("afterbegin",`
+<p>this body is in an iframe in the foreignObject</p>
+<p>should be same size as outside foreignObject</p>`);
+        iframe.remove();
+      }
+    </script>
+  </body>
+</html>
